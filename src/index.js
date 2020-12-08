@@ -39,13 +39,7 @@ app.get("/api/posts", (req, res) => {
         res.status(429).send({message: "Exceed Number of API Calls"});
     }
     else {
-        if(req.query.max === undefined) {
-            for(let i = 0; i < 10; i++) {
-                postArr.push(posts[i]);
-            }
-            res.send(postArr);
-        }
-        else if(req.query.max !== undefined && Number(req.query.max) <= 20) {
+        if(req.query.max !== undefined && Number(req.query.max) <= 20 && Number(req.query.max) > 0) {
             curMinCount = Math.min(Number(req.query.max), curMinCount);
             //console.log(curMinCount);
             for(let i = 0; i < curMinCount; i++) {
@@ -53,8 +47,11 @@ app.get("/api/posts", (req, res) => {
             }
             res.send(postArr);
         }
-        else {
-            res.sendStatus(400);
+        else{
+            for(let i = 0; i < 10; i++) {
+                postArr.push(posts[i]);
+            }
+            res.send(postArr);
         }
     }
 })
