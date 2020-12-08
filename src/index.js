@@ -29,7 +29,7 @@ function resetFunction(){
 app.get("/api/posts", (req, res) => {
     let postArr = [];
     requestCount += 1;
-    if(!timeOutFlag) {
+    if(!timeOutFlag && req.query.max !== undefined) {
         timeOutFlag = true;
         //If the timer request has not been initiated yet.
         curMinCount = Number(req.query.max)
