@@ -14,60 +14,35 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 // your code goes here
 
-let curMinCount = 21;
-let requestCount = 0;
-let timeOutFlag = false;
-let timeoutId = null;
-
-function resetFunction(){
-    timeOutFlag = false;
-    curMinCount = 21;
-    requestCount = 0;
-    console.log("30s done, clearing..")
-    clearTimeout(timeoutId);
-}
+let max = 21;
+let count = 0;
+let interval = true;
 app.get("/api/posts", (req, res) => {
-    let postArr = [];
-    requestCount += 1;
-    if(!timeOutFlag) {
-        timeOutFlag = true;
-        //If the timer request has not been initiated yet.
-        curMinCount = Number(req.query.max)
-        timeoutId = setTimeout(resetFunction, 30000);
+    count++;
+    if(interval) {
+        const id = setInterval(() => {
+            count = 0;
+            interval = true;
+            max = 21;
+            clearInterval(id);
+            // console.log("Interval ended");
+        }, 30 * 1000);
     }
-    if(requestCount > 5) {
-        res.status(429).send({message: "Exceed Number of API Calls"});
-    }
-    else {
-        // if(req.query.max !== undefined && Number(req.query.max) <= 20 && Number(req.query.max) > 0 && !isNaN(Number(req.query.max))) {
-        //     curMinCount = Math.min(Number(req.query.max), curMinCount);
-        //     //console.log(curMinCount)
-        //     for(let i = 0; i < curMinCount; i++) {
-        //         postArr.push(posts[i]);
-        //     }
-        //     res.send(postArr);
-        // }
-        // else{
-        //     for(let i = 0; i < 10; i++) {
-        //         postArr.push(posts[i]);
-        //     }
-        //     curMinCount = 10;
-        //     res.send(postArr);
-        // }
+    interval = false;
+    if(count <= 5) {
         const data = [];
         const currMax = (req.query.max > 0 && req.query.max <= 20 && !isNaN(Number(req.query.max))) ? Number(req.query.max) : 10;
-        const min = Math.min(curMinCount, currMax);
+        const min = Math.min(max, currMax);
         for(let i = 0; i < min; i++) {
             data.push(myData[i]);
         }
-        if(curMinCount > 20) {
-            curMinCount = currMax;
+        if(max > 20) {
+            max = currMax;
         }
         res.send(data);
-
+    } else {
+        res.status(429).send({message: "Exceed Number of API Calls"});
     }
-})
-
+});
 app.listen(port, () => console.log(`App listening on port ${port}!`))
-
 module.exports = app;
