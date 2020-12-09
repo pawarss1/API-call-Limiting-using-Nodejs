@@ -39,7 +39,7 @@ app.get("/api/posts", (req, res) => {
         res.status(429).send({message: "Exceed Number of API Calls"});
     }
     else {
-        if(req.query.max !== undefined && Number(req.query.max) <= 20 && Number(req.query.max) > 0) {
+        if(req.query.max !== undefined && Number(req.query.max) <= 20 && Number(req.query.max) > 0 && !isNaN(Number(req.query.max))) {
             curMinCount = Math.min(Number(req.query.max), curMinCount);
             //console.log(curMinCount);
             for(let i = 0; i < curMinCount; i++) {
