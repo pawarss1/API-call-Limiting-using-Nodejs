@@ -51,6 +51,7 @@ app.get("/api/posts", (req, res) => {
             for(let i = 0; i < 10; i++) {
                 postArr.push(posts[i]);
             }
+            curMinCount = 10;
             res.send(postArr);
         }
     }
