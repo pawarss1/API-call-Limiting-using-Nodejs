@@ -14,14 +14,14 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 // your code goes here
 
-let curMinCount = 20;
+let curMinCount = 21;
 let requestCount = 0;
 let timeOutFlag = false;
 let timeoutId = null;
 
 function resetFunction(){
     timeOutFlag = false;
-    curMinCount = 20;
+    curMinCount = 21;
     requestCount = 0;
     console.log("30s done, clearing..")
     //clearTimeout(timeoutId);
