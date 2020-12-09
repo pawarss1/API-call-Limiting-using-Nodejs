@@ -24,7 +24,7 @@ function resetFunction(){
     curMinCount = 21;
     requestCount = 0;
     console.log("30s done, clearing..")
-    //clearTimeout(timeoutId);
+    clearTimeout(timeoutId);
 }
 app.get("/api/posts", (req, res) => {
     let postArr = [];
