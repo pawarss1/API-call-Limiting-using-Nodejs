@@ -1,4 +1,4 @@
-posts = [
+const posts = [
     {
       "userId": 1,
       "id": 1,
