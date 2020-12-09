@@ -39,21 +39,32 @@ app.get("/api/posts", (req, res) => {
         res.status(429).send({message: "Exceed Number of API Calls"});
     }
     else {
-        if(req.query.max !== undefined && Number(req.query.max) <= 20 && Number(req.query.max) > 0 && !isNaN(Number(req.query.max))) {
-            curMinCount = Math.min(Number(req.query.max), curMinCount);
-            //console.log(curMinCount);
-            for(let i = 0; i < curMinCount; i++) {
-                postArr.push(posts[i]);
-            }
-            res.send(postArr);
+        // if(req.query.max !== undefined && Number(req.query.max) <= 20 && Number(req.query.max) > 0 && !isNaN(Number(req.query.max))) {
+        //     curMinCount = Math.min(Number(req.query.max), curMinCount);
+        //     //console.log(curMinCount)
+        //     for(let i = 0; i < curMinCount; i++) {
+        //         postArr.push(posts[i]);
+        //     }
+        //     res.send(postArr);
+        // }
+        // else{
+        //     for(let i = 0; i < 10; i++) {
+        //         postArr.push(posts[i]);
+        //     }
+        //     curMinCount = 10;
+        //     res.send(postArr);
+        // }
+        const data = [];
+        const currMax = (req.query.max > 0 && req.query.max <= 20 && !isNaN(Number(req.query.max))) ? Number(req.query.max) : 10;
+        const min = Math.min(curMinCount, currMax);
+        for(let i = 0; i < min; i++) {
+            data.push(myData[i]);
         }
-        else{
-            for(let i = 0; i < 10; i++) {
-                postArr.push(posts[i]);
-            }
-            curMinCount = 10;
-            res.send(postArr);
+        if(curMinCount > 20) {
+            curMinCount = currMax;
         }
+        res.send(data);
+
     }
 })
 
